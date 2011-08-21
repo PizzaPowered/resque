@@ -162,7 +162,7 @@ module Resque
   #
   # Returns a Ruby object.
   def bpop(queuelist, timeout)
-    args = queuelist.map {|queue| "queue:#{queue}"} << timeout
+    args = queuelist.map {|queue| "queue:#{queue}"} << timeout.to_i
     redis.blpop *args
   end
 
