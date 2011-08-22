@@ -146,7 +146,7 @@ module Resque
           done_working
           @child = nil
         else
-          break if interval.zero?
+          break if interval.zero? || ENV["EXIT_WHEN_NO_JOBS"]
           unless blocking
             log! "Sleeping for #{interval} seconds"
             procline paused? ? "Paused" : "Waiting for #{@queues.join(',')}"

@@ -367,4 +367,19 @@ context "Resque::Worker" do
     assert_equal 0, Resque.size(:high)
   end
 
+  test "will exit if told to when fails to secure a (blocking) job" do
+    ENV["EXIT_WHEN_NO_JOBS"] = "true"
+
+    assert_equal 0, Resque.size(:high)
+
+    worker = Resque::Worker.new(:high)
+    Timeout.timeout(2) do
+      worker.work(1)
+    end
+
+    assert worker.idle?
+
+    ENV.delete("EXIT_WHEN_NO_JOBS")
+  end
+
 end
